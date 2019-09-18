@@ -1,7 +1,7 @@
 <template>
   <div>
-  <router-view></router-view>
-    <div v-show="this.getisShowFooterBar">
+
+    <div >
       <mt-tabbar v-model="selected" fixed>
         <mt-tab-item id="producthome">
           <img slot="icon" :src="home_img">
@@ -21,7 +21,8 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex'
+
+
     export default {
         name: "FooterBar",
       data(){
@@ -57,11 +58,7 @@
             }
           }
       },
-      computed:{
-          ...mapGetters([
-            'getisShowFooterBar'
-          ])
-      }
+
     }
 </script>
 

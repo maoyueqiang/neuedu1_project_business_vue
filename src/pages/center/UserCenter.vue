@@ -16,6 +16,7 @@
 
 <script>
   import {mapGetters} from  'vuex'
+  import {mapActions} from 'vuex'
     export default {
         name: "UserCenter",
       data(){
@@ -24,7 +25,9 @@
           }
       },
       methods:{
+          ...mapActions(['setIsShowFooterBar']),
         lastpage:function(){
+            this.setIsShowFooterBar(true)
           this.$router.go(-1)
         },
       },
@@ -33,6 +36,7 @@
             'getUser'
           ])
       }
+
 
     }
 </script>

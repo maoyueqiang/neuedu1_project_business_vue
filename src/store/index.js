@@ -12,9 +12,13 @@ const state={
   userInfo:{},
   isShowFooterBar:true,
   productList:[],
-  product:{},
+  product:null,
   keyword:null,
-  categoryId:null
+  categoryId:null,
+  orderStatus:null,
+  judgeAddress:false,
+  address:{},
+  orderNo:null,
 }
 
 //vuex实例

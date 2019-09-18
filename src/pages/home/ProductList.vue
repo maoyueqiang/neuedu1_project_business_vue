@@ -64,7 +64,7 @@
         loadBottom:function() {
           // 加载更多数据
           console.log("=======加载更多===")
-          // this.$refs.loadmore.onBottomLoaded();
+          // this.$refs.loadmore.,'();
           console.log(this.pageModel.pageNum);
           if(this.pageModel.hasNextPage){
             this.getProductList("loadmore",this.pageModel.pageNum+1,10,this.keyword,this.categoryId)

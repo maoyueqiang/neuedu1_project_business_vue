@@ -24,3 +24,19 @@ export function setKeyword({commit},keyword) {
 export function setCategoryId({commit},categoryId) {
   return commit('setCategoryId',categoryId)
 }
+
+export function setOrderStatus({commit},orderStatus) {
+  return commit('setOrderStatus',orderStatus)
+}
+
+export function setJudgeAddress({commit},judgeAddress) {
+  return commit('setJudgeAddress',judgeAddress)
+}
+
+export function setAddress({commit},address) {
+  return commit('setAddress',address)
+}
+
+export function setOrderNo({commit},orderNo) {
+  return commit('setOrderNo',orderNo)
+}

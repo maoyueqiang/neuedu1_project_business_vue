@@ -13,7 +13,7 @@ export function getProductList(state) {
 }
 
 export function getProduct(state) {
-  return state.Product
+  return state.product
 }
 
 export function getKeyword(state) {
@@ -22,4 +22,20 @@ export function getKeyword(state) {
 
 export function getCategoryId(state) {
   return state.categoryId
+}
+
+export function getOrderStatus(state) {
+  return state.orderStatus
+}
+
+export function getJudgeAddress(state) {
+  return state.judgeAddress
+}
+
+export function getAddress(state) {
+  return state.address
+}
+
+export function getOrderNo(state) {
+  return state.orderNo
 }

@@ -56,6 +56,7 @@
                 if(response.data.status==0){
                   _vm.setUserInfo(response.data.data)
                   //退到上一层
+                  _vm.setIsShowFooterBar(true)
                   _vm.$router.go(-1)
 
                 }

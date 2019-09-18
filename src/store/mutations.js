@@ -22,3 +22,20 @@ export function setKeyword(state,keyword) {
 export function setCategoryId(state,categoryId) {
   state.categoryId=categoryId
 }
+
+export function setOrderStatus(state,orderStatus) {
+  state.orderStatus=orderStatus
+}
+
+export function setJudgeAddress(state,judgeAddress) {
+  state.judgeAddress=judgeAddress
+}
+
+export function setAddress(state,address) {
+  state.address=address
+}
+
+export function setOrderNo(state,orderNo) {
+  state.orderNo=orderNo
+}
+

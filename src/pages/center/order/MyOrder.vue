@@ -2,17 +2,11 @@
     <div>
 
       <mt-header title="我的订单">
-        <router-link to="/" slot="left">
+        <router-link to="/mine" slot="left">
           <mt-button icon="back" @click="lastpage">返回</mt-button>
         </router-link>
         <!--<mt-button icon="more" slot="right"></mt-button>-->
       </mt-header>
-
-    <mt-navbar v-model="selected">
-      <mt-tab-item id="1">全部订单</mt-tab-item>
-      <mt-tab-item id="2">已付款</mt-tab-item>
-      <mt-tab-item id="3">已发货</mt-tab-item>
-    </mt-navbar>
 
       <!--父容器填充-->
     <div id="corder_loadmore" ref="wrapper" :style="{height:this.wrapperHeight+'px'}">
@@ -23,9 +17,8 @@
                    :autoFill="autoFill">
 
       <!-- tab-container -->
-      <mt-tab-container v-model="selected">
-        <mt-tab-container-item id="1">
-          <ul>
+
+          <ul v-if="this.orderList!=null">
             <li class="orderItem_container"
                 v-for="order in this.orderList"
                 :key="order.orderNo">
@@ -46,21 +39,22 @@
                       </div>
                     </li>
                   </ul>
-                  <div class="orderBtnDiv">
-                    <mt-button class="orderBtn" size="small">{{getorderDesc(order)}}</mt-button>
+                  <div class="orderBtnDiv" v-if="order.status==10">
+                    <mt-button class="orderBtn" size="small" @click="gotoOrderDetail2(order.orderNo)">去支付</mt-button>
+                  </div>
+                  <div class="orderBtnDiv" v-else>
+                    <mt-button class="orderBtn" size="small" @click="gotoOrderDetail2(order.orderNo)">查看订单详情</mt-button>
                   </div>
                 </div>
               </div>
             </li>
           </ul>
-        </mt-tab-container-item>
-        <mt-tab-container-item id="2">
-          <mt-cell v-for="n in 5" :title="'测试 ' + n" />
-        </mt-tab-container-item>
-        <mt-tab-container-item id="3">
-          <mt-cell v-for="n in 6" :title="'选项 ' + n" />
-        </mt-tab-container-item>
-      </mt-tab-container>
+          <ul v-else>
+              无该类订单
+          </ul>
+
+
+
 
     </mt-loadmore>
     </div>
@@ -69,30 +63,35 @@
 
 <script>
   import {mapActions} from 'vuex'
+  import {mapGetters} from 'vuex'
     export default {
         name: "MyOrder",
       data(){
           return {
-            selected:1,
             wrapperHeight:0,
             autoFill:true,
             allLoaded:false,
-            pageModel:{}
+            pageModel:{},
+            orderStatus:null
           }
 
       },
       computed:{
         orderList:function () {
-
-          return this.pageModel.list
+          if(this.pageModel.list=="undefined"){
+            return null;
+          }
+          else{
+            return this.pageModel.list
+          }
         }
       },
       methods:{
-          lastpage:function () {
-            this.$router.go(-1)
-            this.setIsShowFooterBar(true)
-          },
-        ...mapActions(['setIsShowFooterBar']),
+        ...mapActions(['setIsShowFooterBar','setOrderNo']),
+        ...mapGetters(['getOrderStatus']),
+        lastpage:function () {
+          this.setIsShowFooterBar(true)
+        },
         loadTop:function() {
           this.getMyOrderList('refresh',1,10)
 
@@ -113,55 +112,99 @@
         },
         getMyOrderList:function (optype,pageNo,pageSize) {
           var _vm=this
-          this.service.post("/order/list.do",{
-            "pageNum":pageNo,
-            "pageSize":pageSize
-          })
-            .then(function(response){
-              //_vm.orderList.push(response.data.data.list);
-              console.log(response)
-              if(optype=='refresh'){
-                _vm.pageModel=response.data.data
-                //组件消失动画效果
-                _vm.$refs.loadmore.onTopLoaded();
-                _vm.allLoaded=false
-              }else if(optype=='loadmore'){
-                if(response.data.data.list.length>0){
-                  const oldOrders= _vm.pageModel.list
-                  console.log("=========旧数据===")
-                  console.log(oldOrders)
-                  var orderItem;
-                  // for( var i=0 ;i<oldOrders.length;i++){
-                  // response.data.data.list.splice(0,0,oldOrders[i])
-                  // }
-                  //将旧列表中的数据和新列表中的数据合并，重新赋值
-                  var newArrayOrder=oldOrders.concat(response.data.data.list)
-                  // 将新的数据返回给数据库
-                  response.data.data.list=newArrayOrder
-                  console.log("=========新数据===")
-                  console.log( response.data.data.list)
-                }else{
-                  //加载完成
-                  _vm.allLoaded = true;// 若数据已全部获取完毕
+          if(this.orderStatus==-1){
+            this.service.post("/order/list.do",{
+              "pageNum":pageNo,
+              "pageSize":pageSize
+            })
+              .then(function(response){
+                //_vm.orderList.push(response.data.data.list);
+                console.log(response)
+                if(optype=='refresh'){
+                  _vm.pageModel=response.data.data
+                  //组件消失动画效果
+                  _vm.$refs.loadmore.onTopLoaded();
+                  _vm.allLoaded=false
+                }else if(optype=='loadmore'){
+                  if(response.data.data.list.length>0){
+                    const oldOrders= _vm.pageModel.list
+                    console.log("=========旧数据===")
+                    console.log(oldOrders)
+                    var orderItem;
+                    // for( var i=0 ;i<oldOrders.length;i++){
+                    // response.data.data.list.splice(0,0,oldOrders[i])
+                    // }
+                    //将旧列表中的数据和新列表中的数据合并，重新赋值
+                    var newArrayOrder=oldOrders.concat(response.data.data.list)
+                    // 将新的数据返回给数据库
+                    response.data.data.list=newArrayOrder
+                    console.log("=========新数据===")
+                    console.log( response.data.data.list)
+                  }else{
+                    //加载完成
+                    _vm.allLoaded = true;// 若数据已全部获取完毕
+                  }
+                  _vm.pageModel=response.data.data
+                  console.log("loadmore=")
+                  console.log( _vm.pageModel.list)
+                  _vm.$refs.loadmore.onBottomLoaded();
                 }
-                _vm.pageModel=response.data.data
-                console.log("loadmore=")
-                console.log( _vm.pageModel.list)
-                _vm.$refs.loadmore.onBottomLoaded();
-              }
-            })
-            .catch(function (error) {
-              console.log(error)
-            })
-        },
-        getorderDesc(order){
-          if(order.status==10){
-            return "去支付"
+              })
+              .catch(function (error) {
+                console.log(error)
+              })
           }
-
+          else {
+            this.service.post("/order/list2.do", {
+              "pageNum": pageNo,
+              "pageSize": pageSize,
+              "orderStatus":this.orderStatus
+            })
+              .then(function (response) {
+                //_vm.orderList.push(response.data.data.list);
+                console.log(response)
+                if (optype == 'refresh') {
+                  _vm.pageModel = response.data.data
+                  //组件消失动画效果
+                  _vm.$refs.loadmore.onTopLoaded();
+                  _vm.allLoaded = false
+                } else if (optype == 'loadmore') {
+                  if (response.data.data.list.length > 0) {
+                    const oldOrders = _vm.pageModel.list
+                    console.log("=========旧数据===")
+                    console.log(oldOrders)
+                    var orderItem;
+                    // for( var i=0 ;i<oldOrders.length;i++){
+                    // response.data.data.list.splice(0,0,oldOrders[i])
+                    // }
+                    //将旧列表中的数据和新列表中的数据合并，重新赋值
+                    var newArrayOrder = oldOrders.concat(response.data.data.list)
+                    // 将新的数据返回给数据库
+                    response.data.data.list = newArrayOrder
+                    console.log("=========新数据===")
+                    console.log(response.data.data.list)
+                  } else {
+                    //加载完成
+                    _vm.allLoaded = true;// 若数据已全部获取完毕
+                  }
+                  _vm.pageModel = response.data.data
+                  console.log("loadmore=")
+                  console.log(_vm.pageModel.list)
+                  _vm.$refs.loadmore.onBottomLoaded();
+                }
+              })
+              .catch(function (error) {
+                console.log(error)
+              })
+          }
+        },
+        gotoOrderDetail2:function (orderNo) {
+          this.setOrderNo(orderNo)
+          this.$router.push("/orderDetail2")
         }
       },
       mounted(){
+          this.orderStatus=this.getOrderStatus()
         this.getMyOrderList('refresh',1,10)
         console.log("=====mounted====")
 
@@ -210,7 +253,7 @@
             display flex
             flex-direction column
           .productImage
-            width 1rem
+            width 0.618rem
             height 1rem
           .productName
             overflow :hidden

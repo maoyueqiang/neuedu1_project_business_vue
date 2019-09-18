@@ -81,7 +81,7 @@
                   </div>
                   <div class="cart-tab-5">
                     <div class="cart-item-operation">
-                      <a href="javascript:void 0" class="item-edit-btn">
+                      <a href="javascript:void 0" class="item-edit-btn" @click="deleteItem(item)">
                         <svg class="icon icon-del"><use xlink:href="#icon-del" ></use></svg>
                       </a>
                     </div>
@@ -114,9 +114,7 @@
               <div class="item-total">
                 Item total: <span class="total-price">{{totalMoney|formatMoney}}</span>
               </div>
-              <div class="next-btn-wrap">
-                <a href="javascrit:;" class="btn btn--red" style="width: 200px">结账</a>
-              </div>
+                <a href="javascrit:;" class="btn btn--red" style="width: 200px" @click="gotoOrderDetail">结账</a>
             </div>
           </div>
         </div>
@@ -160,6 +158,7 @@
       },
 
       mounted(){
+          this.setIsShowFooterBar(true)
           this.getCarts()
       },
 
@@ -178,54 +177,113 @@
             })
           },
         addNum:function (item) {
-          item.quantity++
-          this.totalMoney+=item.productPrice
+          var _vm=this
+          //通过axios发请求  post
+          this.service.post("/cart/update.do",{
+            "productId":item.productId,
+            "count":++item.quantity
+          }).then(function (response) {
+            console.log(response)
+            _vm.productList=response.data.data.cartProductVOList
+            _vm.totalMoney=response.data.data.carttotalprice
+            _vm.isallchecked=response.data.data.isallchecked
+          }).catch(function (error) {
+            console.log(error)
+          })
         },
         minNum:function (item) {
-          if(item.quantity>1){
-            item.quantity--
-            this.totalMoney-=item.productPrice
+          var _vm=this
+          if(item.quantity>1) {
+            //通过axios发请求  post
+            this.service.post("/cart/update.do", {
+              "productId": item.productId,
+              "count": --item.quantity
+            }).then(function (response) {
+              console.log(response)
+              _vm.productList = response.data.data.cartProductVOList
+              _vm.totalMoney = response.data.data.carttotalprice
+              _vm.isallchecked = response.data.data.isallchecked
+            }).catch(function (error) {
+              console.log(error)
+            })
           }
+        },
+        deleteItem:function (item) {
+          var _vm=this
+          //通过axios发请求  post
+          this.service.post("/cart/delete_product.do",{
+            "productIds":item.productId
+          }).then(function (response) {
+            console.log(response)
+            _vm.productList=response.data.data.cartProductVOList
+            _vm.totalMoney=response.data.data.carttotalprice
+            _vm.isallchecked=response.data.data.isallchecked
+          }).catch(function (error) {
+            console.log(error)
+          })
         },
         changeCheck:function (item) {
-          item.productChecked=1-item.productChecked
           if(item.productChecked==1){
-            this.totalMoney+=item.quantity*item.productPrice
+            var _vm=this
+            //通过axios发请求  post
+            this.service.post("/cart/unselect.do",{
+              "productId":item.productId
+            }).then(function (response) {
+              console.log(response)
+              _vm.productList=response.data.data.cartProductVOList
+              _vm.totalMoney=response.data.data.carttotalprice
+              _vm.isallchecked=response.data.data.isallchecked
+            }).catch(function (error) {
+              console.log(error)
+            })
           }else{
-            this.totalMoney-=item.quantity*item.productPrice
+            var _vm=this
+            //通过axios发请求  post
+            this.service.post("/cart/select.do",{
+              "productId":item.productId
+            }).then(function (response) {
+              console.log(response)
+              _vm.productList=response.data.data.cartProductVOList
+              _vm.totalMoney=response.data.data.carttotalprice
+              _vm.isallchecked=response.data.data.isallchecked
+            }).catch(function (error) {
+              console.log(error)
+            })
           }
+
         },
         changeAllCheck:function (statu) {
-          var temp=0
-          this.productList.forEach(function (item) {
-            item.productChecked=statu
-            if(statu)
-              temp+=item.quantity*item.productPrice
-          })
-          this.totalMoney=temp
-          this.isallchecked=statu
+          var _vm=this
+          if(statu==true){
+            //通过axios发请求  get
+            this.service.get("/cart/select_all.do").then(function (response) {
+              console.log(response)
+              _vm.productList=response.data.data.cartProductVOList
+              _vm.totalMoney=response.data.data.carttotalprice
+              _vm.isallchecked=response.data.data.isallchecked
+            }).catch(function (error) {
+              console.log(error)
+            })
+          }else{
+            //通过axios发请求  get
+            this.service.get("/cart/unselect_all.do").then(function (response) {
+              console.log(response)
+              _vm.productList=response.data.data.cartProductVOList
+              _vm.totalMoney=response.data.data.carttotalprice
+              _vm.isallchecked=response.data.data.isallchecked
+            }).catch(function (error) {
+              console.log(error)
+            })
+          }
         },
         ...mapActions(['setIsShowFooterBar']),
-      },
-      created(){
-        var _vm=this
-        window.onscroll = function(){
-          //变量scrollTop是滚动条滚动时，距离顶部的距离
-          var scrollTop = document.documentElement.scrollTop||document.body.scrollTop;
-          //变量windowHeight是可视区的高度
-          var windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
-          //变量scrollHeight是滚动条的总高度
-          var scrollHeight = document.documentElement.scrollHeight||document.body.scrollHeight;
-          //滚动条到底部的条件
-          if((scrollTop+windowHeight+60)>=scrollHeight){
-            //写后台加载数据的函数
-            console.log("距顶部"+scrollTop+"可视区高度"+windowHeight+"滚动条总高度"+scrollHeight);
-            _vm.setIsShowFooterBar(false)
-          }else{
-            _vm.setIsShowFooterBar(true)
-          }
+        gotoOrderDetail:function () {
+          this.setIsShowFooterBar(false)
+          this.$router.push("/orderDetail")
+
         }
-      }
+      },
+
 
     }
 </script>
