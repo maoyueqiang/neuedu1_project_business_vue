@@ -145,6 +145,7 @@
 
 <script>
   import {mapActions} from 'vuex'
+  import {Toast} from 'mint-ui'
     export default {
         name: "Cart",
       data(){
@@ -278,8 +279,21 @@
         },
         ...mapActions(['setIsShowFooterBar']),
         gotoOrderDetail:function () {
-          this.setIsShowFooterBar(false)
-          this.$router.push("/orderDetail")
+            var _vm=this
+          this.service.get("/order/get_order_cart_product.do").then(function (response) {
+            console.log(response)
+            if(response.data.status!=0){
+              Toast({
+                message: '购物车中没有选中商品',
+                position: 'center',
+                duration: 3000
+              });
+            }else{
+              _vm.setIsShowFooterBar(false)
+              _vm.$router.push("/orderDetail")
+            }
+          })
+
 
         }
       },

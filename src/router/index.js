@@ -12,6 +12,8 @@ import OrderDetail from '@/pages/center/order/OrderDetail'
 import OrderDetail2 from '@/pages/center/order/OrderDetail2'
 import AddressList from '@/pages/center/order/AddressList'
 import QrCode from '@/pages/center/order/QrCode'
+import AddressItem from '@/pages/center/order/AddressItem'
+import UserRegister from '@/pages/center/UserRegister'
 
 Vue.use(Router)
 
@@ -21,6 +23,11 @@ export default new Router({
       path: '/userLogin',
       name: 'UserLogin',
       component: UserLogin
+    },
+    {
+      path: '/userRegister',
+      name: 'UserRegister',
+      component: UserRegister
     },
     {
       path: '/cart',
@@ -66,6 +73,11 @@ export default new Router({
       path: '/qrCode',
       name: 'QrCode',
       component: QrCode
+    },
+    {
+      path: '/addressItem',
+      name: 'AddressItem',
+      component: AddressItem
     },
     {
       path: '/detail',

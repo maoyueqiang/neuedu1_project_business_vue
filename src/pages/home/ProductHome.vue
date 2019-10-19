@@ -12,10 +12,17 @@
   import HomeCarousel from './components/HomeCarousel'
   import HomeCategory from './components/HomeCategory'
   import HomeHot from './components/HomeHot'
+  import {mapActions} from 'vuex'
     export default {
         name: "ProductHome",
       components:{
         HomeHeader,HomeCarousel,HomeCategory,HomeHot
+      },
+      methods:{
+          ...mapActions(['setIsShowFooterBar'])
+      },
+      mounted() {
+          this.setIsShowFooterBar(true)
       }
     }
 </script>

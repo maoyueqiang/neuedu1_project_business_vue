@@ -31,6 +31,10 @@ export function setJudgeAddress(state,judgeAddress) {
   state.judgeAddress=judgeAddress
 }
 
+export function setChangeAddress(state,changeAddress) {
+  state.changeAddress=changeAddress
+}
+
 export function setAddress(state,address) {
   state.address=address
 }

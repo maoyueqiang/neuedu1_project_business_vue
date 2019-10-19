@@ -13,19 +13,29 @@
 
 <script>
   import {mapActions} from 'vuex'
+  import {Toast} from 'mint-ui'
     export default {
         name: "HomeHeader",
       data(){
           return {
-            productname:""
+            productname:null
           }
       },
       methods:{
           ...mapActions(['setKeyword','setCategoryId']),
         findByKeyword:function () {
-          this.setKeyword(this.productname)
-          this.setCategoryId(null)
-          this.$router.push("/productList")
+            if(this.productname==null){
+              Toast({
+                message: '请输入内容',
+                position: 'center',
+                duration: 3000
+              });
+            }
+          else {
+              this.setKeyword(this.productname)
+              this.setCategoryId(null)
+              this.$router.push("/productList")
+            }
         }
 
       }

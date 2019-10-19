@@ -35,12 +35,12 @@
           <p>待付款</p>
         </div>
         <div @click="toMyOrder(20)" >
-          <span class="iconfont">&#xe606;</span>
+          <span class="iconfont">&#xe618;</span>
           <p>待发货</p>
         </div>
         <div @click="toMyOrder(40)" >
-          <span class="iconfont">&#xe608;</span>
-          <p>已收货</p>
+          <span class="iconfont">&#xe62f;</span>
+          <p>已发货</p>
         </div>
         <div @click="toMyOrder(50)" >
           <span class="iconfont">&#xe6a1;</span>
@@ -72,13 +72,15 @@
         ...mapGetters(['getUser'])
       },
       mounted(){
+          this.setIsShowFooterBar(true)
+        console.log("用户："+JSON.stringify(this.getUser))
         if(JSON.stringify(this.getUser)=='{}'){
           this.optext="去登录"
           this.isLogin=false
           this.image="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=310329945,3969783838&fm=26&gp=0.jpg"
         }
         else{
-          this.optext="编辑个人信息"
+          this.optext="查看个人信息"
           this.isLogin=true
           this.image=this.getUser.image
         }

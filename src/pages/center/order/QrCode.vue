@@ -19,7 +19,7 @@
       },
       methods:{
           ...mapGetters(['getOrderNo']),
-        ...mapActions(['setOrderStatus']),
+        ...mapActions(['setOrderStatus','setIsShowFooterBar']),
         goGrdoupRecor(){
           const TIME_COUNT = 20;
           if(!this.timer){
@@ -49,6 +49,7 @@
         },
       },
       mounted(){
+          this.setIsShowFooterBar(false)
           this.orderNo=this.getOrderNo()
         var _vm=this
         //通过axios发请求  get

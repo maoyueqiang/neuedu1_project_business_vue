@@ -10,6 +10,7 @@ import 'mint-ui/lib/style.css'
 import 'styles/reset.css'
 //保证1像素的边框，因为在多倍屏中可能会显示多像素
 import 'styles/border.css'
+
 import fastClick from 'fastclick'
 fastClick.attach(document.body)
 Vue.use(Mint);

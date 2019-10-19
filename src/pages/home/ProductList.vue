@@ -162,7 +162,8 @@
         },
       },
       mounted() {
-          this.keyword=this.getKeyword()
+        this.setIsShowFooterBar(false)
+        this.keyword=this.getKeyword()
         this.categoryId=this.getCategoryId()
         this.getProductList('refresh',1,10,this.keyword,this.categoryId)
         console.log("=====mounted====")
@@ -171,7 +172,6 @@
         this.wrapperHeight = document.documentElement.clientHeight
           -this.$refs.wrapper.getBoundingClientRect().top;
         console.log(this.wrapperHeight)
-        this.setIsShowFooterBar(false)
       }
     }
 </script>

@@ -95,26 +95,27 @@
             console.log(error)
           })
         },
-        buynow:function () {
+        buynow:async function () {
           var _vm=this
           //通过axios发请求  post
-          this.service.post("/cart/add.do",{
+          await this.service.post("/cart/add.do",{
             "productId":_vm.productDetail.id,
             "count":_vm.quantity
           }).then(function (response) {
             console.log(response)
-            _vm.setProduct(_vm.productDetail)
-            console.log("全局商品"+_vm.getProduct())
-            _vm.jump()
           }).catch(function (error) {
             console.log(error)
           })
+          _vm.setProduct(_vm.productDetail)
+          console.log("全局商品"+_vm.getProduct())
+          _vm.jump()
         },
         jump:function () {
           this.$router.push("/orderDetail")
         }
       },
       mounted(){
+          this.setIsShowFooterBar(false)
           if(this.getProduct()==null){
             var _vm=this
             this.service.post("/product/detail.do",{
@@ -132,7 +133,7 @@
             this.subImages=this.productDetail.subImages
           }
 
-        this.setIsShowFooterBar(false)
+
       }
     }
 </script>

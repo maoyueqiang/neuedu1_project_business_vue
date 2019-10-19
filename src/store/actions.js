@@ -33,6 +33,10 @@ export function setJudgeAddress({commit},judgeAddress) {
   return commit('setJudgeAddress',judgeAddress)
 }
 
+export function setChangeAddress({commit},changeAddress) {
+  return commit('setChangeAddress',changeAddress)
+}
+
 export function setAddress({commit},address) {
   return commit('setAddress',address)
 }

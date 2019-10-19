@@ -48,7 +48,7 @@
       },
       methods:{
           ...mapGetters(['getOrderNo']),
-        ...mapActions(['setOrderNo']),
+        ...mapActions(['setOrderNo','setIsShowFooterBar']),
         lastpage:function(){
           this.$router.go(-1)
         },
@@ -70,6 +70,7 @@
         }
       },
       mounted() {
+          this.setIsShowFooterBar(false)
           this.orderNo=this.getOrderNo()
         var _vm=this
         //通过axios发请求  post

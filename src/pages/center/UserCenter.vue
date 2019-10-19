@@ -10,7 +10,7 @@
     <mt-field label="邮箱" :readonly="readonly" type="email" v-model="this.getUser.email"></mt-field>
     <mt-field label="手机号"  :readonly="readonly" type="tel" v-model="this.getUser.phone"></mt-field>
     <mt-field label="密保问题" :readonly="readonly" type="number" v-model="this.getUser.question"></mt-field>
-
+    <mt-button type="primary" size="large" @click="logout()">登出</mt-button>
   </div>
 </template>
 
@@ -25,16 +25,30 @@
           }
       },
       methods:{
-          ...mapActions(['setIsShowFooterBar']),
+          ...mapActions(['setIsShowFooterBar','setUserInfo']),
         lastpage:function(){
             this.setIsShowFooterBar(true)
           this.$router.go(-1)
         },
+        logout:function () {
+          var _vm=this
+          //通过axios发请求  get
+          this.service.get("/user/logout.do").then(function (response) {
+            console.log(response)
+            _vm.setUserInfo({})
+            _vm.$router.push("/mine")
+          }).catch(function (error) {
+            console.log(error)
+          })
+        }
       },
       computed:{
           ...mapGetters([
             'getUser'
           ])
+      },
+      mounted(){
+          this.setIsShowFooterBar(false)
       }
 
 

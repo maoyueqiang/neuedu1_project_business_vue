@@ -204,6 +204,7 @@
         }
       },
       mounted(){
+          this.setIsShowFooterBar(false)
           this.orderStatus=this.getOrderStatus()
         this.getMyOrderList('refresh',1,10)
         console.log("=====mounted====")
@@ -212,7 +213,7 @@
         this.wrapperHeight = document.documentElement.clientHeight
           -this.$refs.wrapper.getBoundingClientRect().top;
         console.log(this.wrapperHeight)
-        this.setIsShowFooterBar(false)
+
       },
     }
 </script>

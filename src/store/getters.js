@@ -32,6 +32,10 @@ export function getJudgeAddress(state) {
   return state.judgeAddress
 }
 
+export function getChangeAddress(state) {
+  return state.changeAddress
+}
+
 export function getAddress(state) {
   return state.address
 }
