@@ -1,7 +1,11 @@
 
 //store中的state
-export function getUser(state) {
+export function getUserInfo(state) {
   return state.userInfo
+}
+
+export function getUser(state) {
+  return state.user
 }
 
 export function getisShowFooterBar(state) {

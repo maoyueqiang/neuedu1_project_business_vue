@@ -15,10 +15,58 @@ import QrCode from '@/pages/center/order/QrCode'
 import AddressItem from '@/pages/center/order/AddressItem'
 import UserRegister from '@/pages/center/UserRegister'
 
+import Login from '@/pages/Login'
+import Register from '@/pages/Register'
+import Home from '@/pages/Home'
+import Menu from '@/pages/home/components/Menu'
+import Distribute from '@/pages/home/components/Distribute'
+import User from '@/pages/home/components/User'
+
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path:'/',
+      redirect:{
+        name:'Login'
+      }
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
+    },
+    {
+      path: '/register',
+      name: 'Register',
+      component: Register
+    },
+    {
+      path: '/home',
+      name: 'Home',
+      component: Home,
+      redirect:{
+        name:'User'
+      },
+      children:[
+        {
+          path: '/menu',
+          name: 'Menu',
+          component: Menu
+        },
+        {
+          path: '/distribute',
+          name: 'Distribute',
+          component: Distribute
+        },
+        {
+          path: '/user',
+          name: 'User',
+          component: User
+        }
+      ]
+    },
     {
       path: '/userLogin',
       name: 'UserLogin',
@@ -34,11 +82,11 @@ export default new Router({
       name: 'Cart',
       component: Cart
     },
-    {
-      path: '/',
-      name: 'ProductHome',
-      component: ProductHome
-    },
+    // {
+    //   path: '/',
+    //   name: 'ProductHome',
+    //   component: ProductHome
+    // },
     {
       path: '/mine',
       name: 'Mine',

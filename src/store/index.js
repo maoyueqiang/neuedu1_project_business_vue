@@ -10,6 +10,7 @@ Vue.use(Vuex)
 
 const state={
   userInfo:{},
+  user:{},
   isShowFooterBar:true,
   productList:[],
   product:null,

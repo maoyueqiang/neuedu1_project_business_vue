@@ -3,6 +3,10 @@ export function setUserInfo(state,userInfo) {
   state.userInfo=userInfo
 }
 
+export function setUser(state,user) {
+  state.user=user
+}
+
 export function setIsShowFooterBar(state,isshow) {
   state.isShowFooterBar=isshow
 }

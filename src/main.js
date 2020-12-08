@@ -5,14 +5,18 @@ import Vue from 'vue'
 import router from './router'
 import Home from '@/components/Home'
 import './assets/styles/iconfont.css'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 import Mint from 'mint-ui';
 import 'mint-ui/lib/style.css'
 import 'styles/reset.css'
+
 //保证1像素的边框，因为在多倍屏中可能会显示多像素
 import 'styles/border.css'
 
 import fastClick from 'fastclick'
 fastClick.attach(document.body)
+Vue.use(ElementUI);
 Vue.use(Mint);
 
 Vue.config.productionTip = false
@@ -41,6 +45,7 @@ Vue.filter("formatMoney",function (value) {
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
 Vue.use(VueAwesomeSwiper);
+// 全局变量
 import {store} from './store/index'
 /* eslint-disable no-new */
 new Vue({

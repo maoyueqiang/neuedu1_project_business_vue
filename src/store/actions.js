@@ -5,6 +5,10 @@ export function setUserInfo({commit},userInfo) {
   return commit('setUserInfo',userInfo)
 }
 
+export function setUser({commit},user) {
+  return commit('setUser',user)
+}
+
 export function setIsShowFooterBar({commit},isshow) {
   return commit('setIsShowFooterBar',isshow)
 }
